@@ -38,3 +38,28 @@ InkBot is an advanced blogging platform that leverages the power of **Google Gem
    ```bash
    git clone https://github.com/your-username/inkbot.git
    cd inkbot
+
+2.Install dependencies for both frontend and backend:
+
+    cd frontend
+    npm install
+
+    cd ../backend
+    npm install
+    
+3. Create environment variable files .env in both folders:
+
+Backend .env:
+
+    MONGO_URI=your_mongo_db_uri
+    GEMINI_API_KEY=your_gemini_api_key
+    JWT_SECRET=your_jwt_secret
+
+4. Run the app:
+   
+Backend:
+node index.js
+Frontend:
+
+cd client
+npm run dev
