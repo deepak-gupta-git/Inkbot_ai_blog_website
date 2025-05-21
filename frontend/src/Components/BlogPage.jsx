@@ -11,7 +11,7 @@ const BlogPage = () => {
     useEffect(() =>{
         const fetchBlogs = async() => {
             try {
-              let url = "http://localhost:8080/api/blogs";
+              let url = "https://inkbot-ai.vercel.app/api/blogs";
 
                 if(selectedCategory){
                   url += `?category=${selectedCategory}`;
