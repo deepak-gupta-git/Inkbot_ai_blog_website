@@ -10,7 +10,7 @@ const SingleBlog = () => {
   useEffect(() => {
     const fetchBlog = async () => {
       try {
-        const response = await fetch(`http://localhost:8080/api/blogs/${id}`);
+        const response = await fetch(`https://inkbot-ai.vercel.app/api/blogs/${id}`);
         const data = await response.json();
         //   console.log(data);
         setBlog(data);
