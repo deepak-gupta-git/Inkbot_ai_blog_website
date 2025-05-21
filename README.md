@@ -59,7 +59,7 @@ Backend .env:
    
 Backend:
 node index.js
-Frontend:
 
+Frontend:
 cd client
 npm run dev
