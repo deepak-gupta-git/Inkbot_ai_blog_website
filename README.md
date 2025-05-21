@@ -61,5 +61,5 @@ Backend:
 node index.js
 
 Frontend:
-cd client
+cd frontend
 npm run dev
