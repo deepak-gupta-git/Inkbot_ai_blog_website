@@ -25,7 +25,7 @@ const CreateBlogs = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await fetch("https://inkbot-ai.vercel.app/api/blogs", {
+      const response = await fetch("https://inkbot-ai-blog-website.onrender.com/api/blogs", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
