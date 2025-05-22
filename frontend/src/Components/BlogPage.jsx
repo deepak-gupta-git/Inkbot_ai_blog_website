@@ -11,7 +11,7 @@ const BlogPage = () => {
     useEffect(() =>{
         const fetchBlogs = async() => {
             try {
-              let url = "https://inkbot-ai.vercel.app/api/blogs";
+              let url = "https://inkbot-ai-blog-website.onrender.com/api/blogs";
 
                 if(selectedCategory){
                   url += `?category=${selectedCategory}`;
