@@ -10,7 +10,7 @@ const SideBar = () => {
         useEffect(() =>{
             const fetchBlogs = async() => {
                 try {
-                    const response = await fetch("https://inkbot-ai.vercel.app/api/blogs");
+                    const response = await fetch("https://inkbot-ai-blog-website.onrender.com/api/blogs");
                     const data = await response.json();
                     console.log(data);
                     setPopularBlog(data);
