@@ -15,7 +15,7 @@ const PORT = process.env.PORT
 
 //cors
 const corsOptions = {
-    origin: "http://localhost:5173",
+    origin: "https://inkbot-ai-blog-website.vercel.app",
     methods: "GET, POST, PUT, PATCH, DELETE, HEAD",
     credentials: true
 };
