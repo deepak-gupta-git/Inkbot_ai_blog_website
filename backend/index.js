@@ -24,6 +24,10 @@ app.use(cors(corsOptions));
 app.use(express.json());
 
 
+app.get("/", (req, res) => {
+    res.status(200).send("Hello From root");
+});
+
 //router
 app.use("/api", blogRoutes);
 
