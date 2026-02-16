@@ -12,6 +12,7 @@ const BlogPage = () => {
         const fetchBlogs = async() => {
             try {
               let url = "https://inkbot-ai-blog-website.onrender.com/api/blogs";
+                
 
                 if(selectedCategory){
                   url += `?category=${selectedCategory}`;
