@@ -4,6 +4,7 @@ const Blogs = require("../Models/blog_model");
 require("dotenv").config();
 
 const URI = "mongodb+srv://deepak_gupta:deepak_gupta@cluster0.7gbszgc.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+// mongodb+srv://deepak_gupta:<db_password>@cluster0.7gbszgc.mongodb.net/?appName=Cluster0
 
 const initDB = async () => {
   await Blogs.deleteMany({});
