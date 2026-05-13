@@ -38,7 +38,6 @@ const Ai_Feature = () => {
       ></textarea>
       <button onClick={generateBlog}
         className="text-white mt4 bg-orange-500 px-6 py-2 font-medium rounded hover:bg-white hover:text-orange-500 transition-all duration-200 ease-in"
-'
       >
         Generate Blog
       </button>
