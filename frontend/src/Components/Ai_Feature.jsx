@@ -7,7 +7,7 @@ const Ai_Feature = () => {
   const [loading, setLoading] = useState(false);
 
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-
+  
   async function generateBlog() {
     if (!question.trim()) {
       alert("Please enter a topic!");
