@@ -14,32 +14,49 @@ const Ai_Feature = () => {
       return;
     }
 
+    if (!API_KEY) {
+      alert("API Key not found. Check your .env file.");
+      return;
+    }
+
     setLoading(true);
     setAnswer("");
 
     try {
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+        `https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
         {
           contents: [
             {
               parts: [
                 {
-                  text: `Write a detailed blog on: ${question}`,
+                  text: `Write a professional and detailed blog on the topic: ${question}`,
                 },
               ],
             },
           ],
+        },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
         }
       );
+
+      console.log(response.data);
 
       const result =
         response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
       setAnswer(result || "No response received.");
     } catch (error) {
-      console.error(error);
-      setAnswer("Failed to generate blog.");
+      console.error("Full Error:", error);
+
+      const errorMessage =
+        error?.response?.data?.error?.message ||
+        "Failed to generate blog.";
+
+      setAnswer(errorMessage);
     } finally {
       setLoading(false);
     }
@@ -47,20 +64,22 @@ const Ai_Feature = () => {
 
   return (
     <div className="p-5 flex flex-col gap-4 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold">AI Blog Generator</h2>
+      <h2 className="text-3xl font-bold text-center">
+        AI Blog Generator
+      </h2>
 
       <textarea
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
-        className="border border-gray-400 p-3 w-full rounded-lg"
-        placeholder="Enter your topic..."
+        className="border border-gray-400 p-3 w-full rounded-lg outline-none focus:ring-2 focus:ring-orange-400"
+        placeholder="Enter your blog topic..."
         rows="4"
       />
 
       <button
         onClick={generateBlog}
         disabled={loading}
-        className="text-white bg-orange-500 px-6 py-2 rounded-lg hover:bg-orange-600 disabled:bg-gray-400"
+        className="text-white bg-orange-500 px-6 py-3 rounded-lg hover:bg-orange-600 transition-all disabled:bg-gray-400"
       >
         {loading ? "Generating..." : "Generate Blog"}
       </button>
@@ -68,8 +87,8 @@ const Ai_Feature = () => {
       <textarea
         value={answer}
         readOnly
-        rows="12"
-        className="border border-gray-400 p-3 w-full rounded-lg bg-gray-50"
+        rows="14"
+        className="border border-gray-400 p-4 w-full rounded-lg bg-gray-50 outline-none"
         placeholder="Generated blog will appear here..."
       />
     </div>
