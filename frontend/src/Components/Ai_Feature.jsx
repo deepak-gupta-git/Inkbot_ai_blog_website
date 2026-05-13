@@ -23,39 +23,41 @@ const Ai_Feature = () => {
     setAnswer("");
 
     try {
-     const response = await axios.post(
-  `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`
-          contents: [
+  const response = await axios.post(
+    `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
+    {
+      contents: [
+        {
+          parts: [
             {
-              parts: [
-                {
-                  text: `Write a professional and detailed blog on the topic: ${question}`,
-                },
-              ],
+              text: `Write a professional and detailed blog on the topic: ${question}`,
             },
           ],
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      ],
+    },
+    {
+      headers: {
+        "Content-Type": "application/json",
+      },
+    }
+  );
 
-      console.log(response.data);
+  console.log(response.data);
 
-      const result =
-        response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+  const result =
+    response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-      setAnswer(result || "No response received.");
-    } catch (error) {
-      console.error("Full Error:", error);
+  setAnswer(result || "No response received.");
+} catch (error) {
+  console.error("Full Error:", error);
 
-      const errorMessage =
-        error?.response?.data?.error?.message ||
-        "Failed to generate blog.";
+  const errorMessage =
+    error?.response?.data?.error?.message ||
+    "Failed to generate blog.";
 
-      setAnswer(errorMessage);
+  setAnswer(errorMessage);
+}
     } finally {
       setLoading(false);
     }
