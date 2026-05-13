@@ -21,8 +21,8 @@ const Ai_Feature = () => {
 
     setLoading(true);
     setAnswer("");
-
-    try {
+ 
+try {
   const response = await axios.post(
     `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
     {
@@ -58,10 +58,6 @@ const Ai_Feature = () => {
 
   setAnswer(errorMessage);
 }
-    } finally {
-      setLoading(false);
-    }
-  }
 
   return (
     <div className="p-5 flex flex-col gap-4 max-w-4xl mx-auto">
