@@ -6,16 +6,14 @@ const Ai_Feature = () => {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
+  const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
 
   async function generateBlog() {
-    // Check if topic is empty
     if (!question.trim()) {
       alert("Please enter a topic!");
       return;
     }
 
-    // Check if API key exists
     if (!API_KEY) {
       alert("API Key not found. Check your .env file.");
       return;
@@ -26,20 +24,19 @@ const Ai_Feature = () => {
 
     try {
       const response = await axios.post(
-        `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${API_KEY}`,
+        "https://openrouter.ai/api/v1/chat/completions",
         {
-          contents: [
+          model: "deepseek/deepseek-chat",
+          messages: [
             {
-              parts: [
-                {
-                  text: `Write a professional and detailed blog on the topic: ${question}`,
-                },
-              ],
+              role: "user",
+              content: `Write a professional and detailed blog on the topic: ${question}`,
             },
           ],
         },
         {
           headers: {
+            Authorization: `Bearer ${API_KEY}`,
             "Content-Type": "application/json",
           },
         }
@@ -48,7 +45,7 @@ const Ai_Feature = () => {
       console.log(response.data);
 
       const result =
-        response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+        response?.data?.choices?.[0]?.message?.content;
 
       setAnswer(result || "No response received.");
     } catch (error) {
@@ -70,7 +67,6 @@ const Ai_Feature = () => {
         AI Blog Generator
       </h2>
 
-      {/* Input Box */}
       <textarea
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
@@ -79,7 +75,6 @@ const Ai_Feature = () => {
         rows="4"
       />
 
-      {/* Generate Button */}
       <button
         onClick={generateBlog}
         disabled={loading}
@@ -88,7 +83,6 @@ const Ai_Feature = () => {
         {loading ? "Generating..." : "Generate Blog"}
       </button>
 
-      {/* Output Box */}
       <textarea
         value={answer}
         readOnly
