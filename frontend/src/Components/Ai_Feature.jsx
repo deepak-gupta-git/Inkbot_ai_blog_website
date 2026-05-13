@@ -6,7 +6,7 @@ const Ai_Feature = () => {
   const [answer, setAnswer] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
+  const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
 
   async function generateBlog() {
     if (!question.trim()) {
@@ -24,19 +24,20 @@ const Ai_Feature = () => {
 
     try {
       const response = await axios.post(
-        "https://openrouter.ai/api/v1/chat/completions",
+        `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEY}`,
         {
-          model: "deepseek/deepseek-chat",
-          messages: [
+          contents: [
             {
-              role: "user",
-              content: `Write a professional and detailed blog on the topic: ${question}`,
+              parts: [
+                {
+                  text: `Write a small blog on the topic: ${question}`,
+                },
+              ],
             },
           ],
         },
         {
           headers: {
-            Authorization: `Bearer ${API_KEY}`,
             "Content-Type": "application/json",
           },
         }
@@ -45,11 +46,11 @@ const Ai_Feature = () => {
       console.log(response.data);
 
       const result =
-        response?.data?.choices?.[0]?.message?.content;
+        response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
 
       setAnswer(result || "No response received.");
     } catch (error) {
-      console.error("Full Error:", error);
+      console.error("Gemini Error:", error);
 
       const errorMessage =
         error?.response?.data?.error?.message ||
@@ -62,33 +63,33 @@ const Ai_Feature = () => {
   }
 
   return (
-    <div className="p-5 flex flex-col gap-4 max-w-4xl mx-auto">
-      <h2 className="text-3xl font-bold text-center">
+    <div className="max-w-4xl mx-auto p-5 flex flex-col gap-4">
+      <h1 className="text-3xl font-bold text-center">
         AI Blog Generator
-      </h2>
+      </h1>
 
       <textarea
+        rows="4"
+        placeholder="Enter your blog topic..."
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
-        className="border border-gray-400 p-3 w-full rounded-lg outline-none focus:ring-2 focus:ring-orange-400"
-        placeholder="Enter your blog topic..."
-        rows="4"
+        className="border border-gray-400 p-3 rounded-lg outline-none focus:ring-2 focus:ring-orange-400"
       />
 
       <button
         onClick={generateBlog}
         disabled={loading}
-        className="text-white bg-orange-500 px-6 py-3 rounded-lg hover:bg-orange-600 transition-all disabled:bg-gray-400"
+        className="bg-orange-500 hover:bg-orange-600 text-white py-3 rounded-lg transition-all disabled:bg-gray-400"
       >
         {loading ? "Generating..." : "Generate Blog"}
       </button>
 
       <textarea
-        value={answer}
-        readOnly
         rows="14"
-        className="border border-gray-400 p-4 w-full rounded-lg bg-gray-50 outline-none"
+        readOnly
+        value={answer}
         placeholder="Generated blog will appear here..."
+        className="border border-gray-400 p-4 rounded-lg bg-gray-50 outline-none"
       />
     </div>
   );
