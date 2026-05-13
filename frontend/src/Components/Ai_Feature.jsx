@@ -10,7 +10,7 @@ const Ai_Feature = () => {
   async function generateBlog() {
     setAnswer("Loading...");
     const response = await axios({
-      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCz0Xc8UYT7h8I-gjkaAi8yhkoKMsE2yxQ",
+      url: "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=AIzaSyCw_cqjyic6SN4veFsNl6BRGn7lhgelJUU",
       method: "post",
       data: {
         contents: [
