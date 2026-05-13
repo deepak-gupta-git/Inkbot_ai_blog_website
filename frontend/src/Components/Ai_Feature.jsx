@@ -7,13 +7,15 @@ const Ai_Feature = () => {
   const [loading, setLoading] = useState(false);
 
   const API_KEY = import.meta.env.VITE_GEMINI_API_KEY;
-  
+
   async function generateBlog() {
+    // Check if topic is empty
     if (!question.trim()) {
       alert("Please enter a topic!");
       return;
     }
 
+    // Check if API key exists
     if (!API_KEY) {
       alert("API Key not found. Check your .env file.");
       return;
@@ -21,43 +23,46 @@ const Ai_Feature = () => {
 
     setLoading(true);
     setAnswer("");
- 
-try {
-  const response = await axios.post(
-    `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
-    {
-      contents: [
+
+    try {
+      const response = await axios.post(
+        `https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${API_KEY}`,
         {
-          parts: [
+          contents: [
             {
-              text: `Write a professional and detailed blog on the topic: ${question}`,
+              parts: [
+                {
+                  text: `Write a professional and detailed blog on the topic: ${question}`,
+                },
+              ],
             },
           ],
         },
-      ],
-    },
-    {
-      headers: {
-        "Content-Type": "application/json",
-      },
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
+
+      console.log(response.data);
+
+      const result =
+        response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
+
+      setAnswer(result || "No response received.");
+    } catch (error) {
+      console.error("Full Error:", error);
+
+      const errorMessage =
+        error?.response?.data?.error?.message ||
+        "Failed to generate blog.";
+
+      setAnswer(errorMessage);
+    } finally {
+      setLoading(false);
     }
-  );
-
-  console.log(response.data);
-
-  const result =
-    response?.data?.candidates?.[0]?.content?.parts?.[0]?.text;
-
-  setAnswer(result || "No response received.");
-} catch (error) {
-  console.error("Full Error:", error);
-
-  const errorMessage =
-    error?.response?.data?.error?.message ||
-    "Failed to generate blog.";
-
-  setAnswer(errorMessage);
-}
+  }
 
   return (
     <div className="p-5 flex flex-col gap-4 max-w-4xl mx-auto">
@@ -65,6 +70,7 @@ try {
         AI Blog Generator
       </h2>
 
+      {/* Input Box */}
       <textarea
         value={question}
         onChange={(e) => setQuestion(e.target.value)}
@@ -73,6 +79,7 @@ try {
         rows="4"
       />
 
+      {/* Generate Button */}
       <button
         onClick={generateBlog}
         disabled={loading}
@@ -81,6 +88,7 @@ try {
         {loading ? "Generating..." : "Generate Blog"}
       </button>
 
+      {/* Output Box */}
       <textarea
         value={answer}
         readOnly
